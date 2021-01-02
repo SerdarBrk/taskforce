@@ -158,3 +158,53 @@ LocalTime sevenThirty = LocalTime.parse(&quot;06:30&quot;).plus(1, ChronoUnit.HO
 int six = LocalTime.parse(&quot;06:30&quot;).getHour();
 ````
 
+### DateTimeFormatter Sınıfı ile Örnekler
+
+DateTimeFormatter sınıfı Java 8 ile gelmiştir, LocalDate ve LocalTime sınıfı gibi type-safety özelliği vardır. SimpleDateFormat Sınıfıyla tarih-zaman formatlamak aynı anda iki threadin tarih-zaman formatı değiştirmeye çalıştığında, threadlerin birbirinin formatını kullanma ihtimali doğduğu için DateTimeFormatter zaman formatlamada önerilir. DateTimeFormatter sınıfı ile LocalDate, LocalTime ve LocalDateTime ile oluşturulmuş değerleri formatlar.
+
+LocalDate Sınıfı için bir örnek;
+
+```java
+//Bugünün tarihini alıyoruz.
+LocalDate tarih=LocalDate.now();
+
+//ofPattern metodu aracılığıyla formatımızı giriyoruz..
+//Burada tarih LocalDate objesini formatlıyorisek ayı(month) belirtmek için 'MM' kullanılmalıdır.
+//Aksi takdirde 'mm' olarak kullanılması dakika(minute) anlamına gelir.
+//ve 'UnsupportedTemporalTypeException' hatasını alarız.
+DateTimeFormatter tarihFormatlayici=DateTimeFormatter.ofPattern("dd$MM$yyyy");
+
+//tarihFormatlayici nesnemizi formatlayıp tarihStringi değişkenine atıyoruz.
+//Burada tarih objesinin içindeki tarihimiz bizim formatımıza dönüştürülerek
+//Değişkene atılır.
+String tarihStringi=tarih.format(tarihFormatlayici);
+```
+
+Çıktı: 02$01$2021
+
+LocalTime Sınıfı için bir örnek;	
+
+```java
+// Bu saat formatımız 24 saatlik dilimi içerir.
+DateTimeFormatter saatFormatlayicisi1=DateTimeFormatter.ofPattern("hh*mm");
+//Bu saat formatımız ÖÖ/ÖS (AM/PM) şekilindedir.
+DateTimeFormatter saatFormatlayicisi2=DateTimeFormatter.ofPattern("hh$mm a");
+
+LocalTime saat=LocalTime.now();
+
+//Formatlarımızı string değişkenlere atıyoruz.
+String ilkFormat=saat.format(saatFormatlayicisi1);
+String ikinciFormat=saat.format(saatFormatlayicisi2);
+```
+
+ilkFormat çıktısı: 10*05
+
+ikinciFormat çıktısı: 10$05 ÖS
+
+
+
+## Kaynak:
+
+* [Kaynak 1](https://howtodoinjava.com/java/date-time/java8-datetimeformatter-example/)
+* [Kaynak 2](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html)
+
